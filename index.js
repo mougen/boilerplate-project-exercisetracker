@@ -82,7 +82,7 @@ function saveExercise (req, res){
       res.json({
         _id: userOutput._id,
         username: userOutput.username,
-        date: exerciseOutput.date,
+        date: new Date(exerciseOutput.date).toDateString(),
         description: exerciseOutput.description,
         duration: Number(exerciseOutput.duration)
       })
