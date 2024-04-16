@@ -115,7 +115,7 @@ function getLogs(req, res) {
           _id: userOutput._id,
           username: userOutput.username,
           count: exerciseOutput.length,
-          log: exerciseOutput.map((x) => new Date(x.date).toDateString())
+          log: exerciseOutput.map(x => ({description: x.description, date: new Date(x.date).toDateString(), duration: x.duration}))
         })
       })
       .catch(()=>{
@@ -132,7 +132,7 @@ function getLogs(req, res) {
           _id: userOutput._id,
           username: userOutput.username,
           count: exerciseOutput.length,
-          log: exerciseOutput
+          log: exerciseOutput.map(x => ({description: x.description, date: new Date(x.date).toDateString(), duration: x.duration}))
         })
       })
       .catch(()=>{
@@ -149,7 +149,7 @@ function getLogs(req, res) {
           _id: userOutput._id,
           username: userOutput.username,
           count: exerciseOutput.length,
-          log: exerciseOutput
+          log: exerciseOutput.map(x => ({description: x.description, date: new Date(x.date).toDateString(), duration: x.duration}))
         })
       })
       .catch(()=>{
@@ -166,7 +166,7 @@ function getLogs(req, res) {
           _id: userOutput._id,
           username: userOutput.username,
           count: exerciseOutput.length,
-          log: exerciseOutput
+          log: exerciseOutput.map(x => ({description: x.description, date: new Date(x.date).toDateString(), duration: x.duration}))
         })
       })
       .catch(()=>{
