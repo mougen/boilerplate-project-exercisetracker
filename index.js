@@ -82,7 +82,7 @@ function saveExercise (req, res){
       res.json({
         _id: userOutput._id,
         username: userOutput.username,
-        date: exerciseOutput.date.toDateString(),
+        date: exerciseOutput.date,
         description: exerciseOutput.description,
         duration: Number(exerciseOutput.duration)
       })
@@ -104,8 +104,6 @@ function getLogs(req, res) {
   const to = req.query.to ? ( Number(req.query.to) ? new Date(Number(req.query.to )) : new Date(req.query.to ) ): ''
   const limit = req.query.limit ? (isNaN(Number(req.query.limit))? 0: Number(req.query.limit)) : 0
 
-  console.log(from)
-  console.log(to)
   user.findById(id)
   .then((userOutput)=>{
     if(from && to) {
@@ -117,7 +115,7 @@ function getLogs(req, res) {
           _id: userOutput._id,
           username: userOutput.username,
           count: exerciseOutput.length,
-          log: exerciseOutput
+          log: exerciseOutput.map((x) => new Date(x.date).toDateString())
         })
       })
       .catch(()=>{
@@ -159,7 +157,6 @@ function getLogs(req, res) {
         return console.log({'error': 'no logs'})
       })
     }
-    
     else {
       exercise.find({user_id: id})
       .limit(limit)
