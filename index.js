@@ -104,23 +104,80 @@ function getLogs(req, res) {
   const to = req.query.to ? ( Number(req.query.to) ? new Date(Number(req.query.to )) : new Date(req.query.to ) ): ''
   const limit = req.query.limit ? (isNaN(Number(req.query.limit))? 0: Number(req.query.limit)) : 0
 
+  console.log(from)
+  console.log(to)
   user.findById(id)
   .then((userOutput)=>{
-    exercise.find({user_id: id, date : { $gte: from, $lte: to }})
-    .limit(limit)
-    .exec()
-    .then((exerciseOutput)=>{
-      res.json({
-        _id: userOutput._id,
-        username: userOutput.username,
-        count: exerciseOutput.length,
-        log: exerciseOutput
+    if(from && to) {
+      exercise.find({user_id: id, date : { $gte: from, $lte: to }})
+      .limit(limit)
+      .exec()
+      .then((exerciseOutput)=>{
+        res.json({
+          _id: userOutput._id,
+          username: userOutput.username,
+          count: exerciseOutput.length,
+          log: exerciseOutput
+        })
       })
-    })
-    .catch(()=>{
-      res.json({'error': 'no logs'})
-      return console.log({'error': 'no logs'})
-    })
+      .catch(()=>{
+        res.json({'error': 'no logs'})
+        return console.log({'error': 'no logs'})
+      })
+    }
+    else if(from) {
+      exercise.find({user_id: id, date : { $gte: from}})
+      .limit(limit)
+      .exec()
+      .then((exerciseOutput)=>{
+        res.json({
+          _id: userOutput._id,
+          username: userOutput.username,
+          count: exerciseOutput.length,
+          log: exerciseOutput
+        })
+      })
+      .catch(()=>{
+        res.json({'error': 'no logs'})
+        return console.log({'error': 'no logs'})
+      })
+    }
+    else if(to) {
+      exercise.find({user_id: id, date : {$lte: to }})
+      .limit(limit)
+      .exec()
+      .then((exerciseOutput)=>{
+        res.json({
+          _id: userOutput._id,
+          username: userOutput.username,
+          count: exerciseOutput.length,
+          log: exerciseOutput
+        })
+      })
+      .catch(()=>{
+        res.json({'error': 'no logs'})
+        return console.log({'error': 'no logs'})
+      })
+    }
+    
+    else {
+      exercise.find({user_id: id})
+      .limit(limit)
+      .exec()
+      .then((exerciseOutput)=>{
+        res.json({
+          _id: userOutput._id,
+          username: userOutput.username,
+          count: exerciseOutput.length,
+          log: exerciseOutput
+        })
+      })
+      .catch(()=>{
+        res.json({'error': 'no logs'})
+        return console.log({'error': 'no logs'})
+      })
+    }
+    
   })
   .catch(()=>{
     res.json({'error': 'uesr not found'})
